@@ -1,6 +1,6 @@
 # Open-Git
 
-An extension that opens the current Git remote repository instantly in the browser.
+An extension that opens the current Git remote repository in the browser in two quick steps.
 
 <br />
 
@@ -24,4 +24,4 @@ where `opg` stands for `open git`.
 
 Example:
 
-![Command Palette](/src/assets/command_step.png)
+![Command Palette steps](./src/assets/command_step.png)

@@ -1,5 +1,6 @@
-import { window, workspace } from "vscode";
+import { window } from "vscode";
 import { ExecException, exec } from "child_process";
+import { dirname } from "path";
 
 export class Process {
   static runCommand = (command: string): Promise<string> => {
@@ -17,6 +18,11 @@ export class Process {
 
   private static getWorkingDirectory(): string | undefined {
     const fileName = window.activeTextEditor?.document.fileName;
-    return workspace.workspaceFolders?.map((folder) => folder.uri.fsPath).filter((fsPath) => fileName?.startsWith(fsPath))[0];
+
+    if (!fileName) {
+      throw new Error("No file within a Git repository is opened!");
+    }
+
+    return dirname(fileName);
   }
 }

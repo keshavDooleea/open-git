@@ -4,8 +4,11 @@
   "description": "Open Git repository",
   "author": "Reetesh Dooleea",
   "publisher": "ReeteshDooleea",
-  "version": "0.0.8",
-  "repository": "https://github.com/keshavDooleea/open-git",
+  "version": "0.0.9",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keshavDooleea/open-git"
+  },
   "engines": {
     "vscode": "^1.75.0"
   },

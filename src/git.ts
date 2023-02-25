@@ -14,7 +14,7 @@ export class Git {
       this.parseURL(repositoryURL);
     } catch (error) {
       console.log("Error while running command", error);
-      VsCode.showMessage("No directory with Git found");
+      VsCode.showMessage("No directory with Git found!");
     }
   }
 
@@ -25,7 +25,7 @@ export class Git {
    */
   private parseURL(repositoryURL: string): Promise<void> | void {
     if (!repositoryURL) {
-      return VsCode.showMessage("Git remote repository not found");
+      return VsCode.showMessage("Git remote repository not found!");
     }
 
     // url is in https:// format
@@ -39,20 +39,17 @@ export class Git {
 
   private openHTTPS(repositoryURL: string): Promise<void> {
     const url = decodeURI(repositoryURL).trim(); // remove URLs encodings
-    console.log("openHTTPS", repositoryURL, url);
     return VsCode.openURL(url);
   }
 
   private openSSH(repositoryURL: string): Promise<void> | void {
     if (!(repositoryURL.includes("@") && repositoryURL.includes(":"))) {
-      return VsCode.showMessage("Unknown Git repository");
+      return VsCode.showMessage("Unknown Git repository!");
     }
 
     const [gitDomain, repositoryName] = repositoryURL.split(":"); // ["git@github.com", "user/repo.git"]
     const domain = gitDomain.split("@")[1]; // ["git", "github.com"]
     const url = `https://${domain}/${repositoryName}`;
-
-    console.log("openSSH", repositoryURL, url);
 
     VsCode.openURL(url);
   }

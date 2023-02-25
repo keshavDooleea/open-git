@@ -1,4 +1,4 @@
-import { window } from "vscode";
+import { window, workspace } from "vscode";
 import { ExecException, exec } from "child_process";
 import { dirname } from "path";
 
@@ -19,10 +19,19 @@ export class Process {
   private static getWorkingDirectory(): string | undefined {
     const fileName = window.activeTextEditor?.document.fileName;
 
-    if (!fileName) {
-      throw new Error("No file within Git repository is opened in the editor!");
+    // a file is opened, return its working directory
+    if (fileName) {
+      return dirname(fileName);
     }
 
-    return dirname(fileName);
+    // no file is opened in the editor, so get opened workspace
+    const workSpace = workspace.workspaceFolders;
+
+    // empty sidebar, no workspace opened
+    if (!workSpace || workSpace.length === 0) {
+      throw new Error("No directory opened!");
+    }
+
+    return workSpace[0].uri.fsPath;
   }
 }

@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "opg.helloWorld",
-        "title": "Hello World"
+        "command": "opg.start",
+        "title": "opg"
       }
     ]
   },

@@ -2,7 +2,7 @@ import { Process } from "./process";
 import { VsCode } from "./vs-code";
 
 export class Git {
-  private readonly repositoryURL = "git config --get remote.origin.url";
+  private readonly GIT_COMMAND = "git config --get remote.origin.url";
 
   constructor() {
     this.initGitURL();
@@ -10,7 +10,7 @@ export class Git {
 
   private async initGitURL(): Promise<void> {
     try {
-      const reposityURL = await Process.runCommand(this.repositoryURL);
+      const reposityURL = await Process.runCommand(this.GIT_COMMAND);
       this.parseURL(reposityURL);
     } catch (error) {
       console.log("Error while running command", error);
@@ -42,8 +42,6 @@ export class Git {
     const [gitDomain, repositoryName] = repositoryURL.split(":"); // ["git@github.com", "user/repo.git"]
     const domain = gitDomain.split("@")[1]; // ["git", "github.com"]
     const url = `https://${domain}/${repositoryName}`;
-
-    console.log("URL IS", url);
 
     VsCode.openURL(url);
   }

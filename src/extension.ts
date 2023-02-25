@@ -1,8 +1,8 @@
-import * as vscode from "vscode";
+import { ExtensionContext, commands } from "vscode";
 import { Git } from "./git";
 
-export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand("opg.start", () => {
+export function activate(context: ExtensionContext) {
+  let disposable = commands.registerCommand("opg.start", () => {
     new Git();
   });
 

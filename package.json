@@ -2,7 +2,10 @@
   "name": "opg",
   "displayName": "open-git",
   "description": "Open Git repository",
-  "version": "0.0.1",
+  "author": "Reetesh Dooleea",
+  "publisher": "ReeteshDooleea",
+  "version": "0.0.4",
+  "repository": "https://github.com/keshavDooleea/open-git",
   "engines": {
     "vscode": "^1.75.0"
   },

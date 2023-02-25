@@ -9,7 +9,7 @@ export class Process {
     return new Promise<string>((resolve, reject) => {
       exec(command, { cwd }, (err: ExecException | null, output: string) => {
         if (err) {
-          return reject(err);
+          return reject(new Error("No directory with Git found!"));
         }
         return resolve(output);
       });
@@ -20,7 +20,7 @@ export class Process {
     const fileName = window.activeTextEditor?.document.fileName;
 
     if (!fileName) {
-      throw new Error("No file within a Git repository is opened!");
+      throw new Error("No file within Git repository is opened in the editor!");
     }
 
     return dirname(fileName);

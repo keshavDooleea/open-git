@@ -12,9 +12,10 @@ export class Git {
     try {
       const repositoryURL = await Process.runCommand(this.GIT_COMMAND);
       this.parseURL(repositoryURL);
-    } catch (error) {
+    } catch (err) {
+      const error = err as Error;
       console.log("Error while running command", error);
-      VsCode.showMessage("No directory with Git found!");
+      VsCode.showMessage(error.message);
     }
   }
 

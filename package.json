@@ -4,7 +4,7 @@
   "description": "Open Git repository",
   "author": "Reetesh Dooleea",
   "publisher": "ReeteshDooleea",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "repository": "https://github.com/keshavDooleea/open-git",
   "engines": {
     "vscode": "^1.75.0"

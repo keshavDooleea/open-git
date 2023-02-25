@@ -14,7 +14,7 @@ export class Git {
       this.parseURL(reposityURL);
     } catch (error) {
       console.log("Error while running command", error);
-      VsCode.showMessage("Could not find Git remote repository");
+      VsCode.showMessage("No directory with Git found");
     }
   }
 
@@ -25,7 +25,7 @@ export class Git {
    */
   private parseURL(repositoryURL: string): Promise<void> | void {
     if (!repositoryURL) {
-      return VsCode.showMessage("No Git repository found");
+      return VsCode.showMessage("Git remote repository not found");
     }
 
     // url is in https:// format

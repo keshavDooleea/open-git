@@ -1,1 +1,168 @@
-(()=>{"use strict";var e={792:(e,t,o)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Git=void 0;const s=o(518),r=o(58);t.Git=class{constructor(){this.GIT_COMMAND="git config --get remote.origin.url",this.initGitURL()}async initGitURL(){try{const e=await s.Process.runCommand(this.GIT_COMMAND);this.parseURL(e)}catch(e){console.log("Error while running command",e),r.VsCode.showMessage("Could not find Git remote repository")}}parseURL(e){if(!e)return r.VsCode.showMessage("No Git repository found");if(e.startsWith("http"))return r.VsCode.openURL(e);if(!e.includes("@")||!e.includes(":"))return r.VsCode.showMessage("Unknown Git repository");const[t,o]=e.split(":"),s=`https://${t.split("@")[1]}/${o}`;r.VsCode.openURL(s)}}},518:(e,t,o)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Process=void 0;const s=o(496),r=o(81);class i{static getWorkingDirectory(){const e=s.window.activeTextEditor?.document.fileName;return s.workspace.workspaceFolders?.map((e=>e.uri.fsPath)).filter((t=>e?.startsWith(t)))[0]}}t.Process=i,i.runCommand=e=>{const t=i.getWorkingDirectory();return new Promise(((o,s)=>{(0,r.exec)(e,{cwd:t},((e,t)=>e?s(e):o(t)))}))}},58:(e,t,o)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.VsCode=void 0;const s=o(496);t.VsCode=class{static showMessage(e,t){s.window.showInformationMessage(e,t)}static async openURL(e){const t=await s.env.openExternal(s.Uri.parse(e))?"Opened Git repository":"An error occurred while opening repository";this.showMessage(t,{detail:e})}}},496:e=>{e.exports=require("vscode")},81:e=>{e.exports=require("child_process")}},t={};function o(s){var r=t[s];if(void 0!==r)return r.exports;var i=t[s]={exports:{}};return e[s](i,i.exports,o),i.exports}var s={};(()=>{var e=s;Object.defineProperty(e,"__esModule",{value:!0}),e.deactivate=e.activate=void 0;const t=o(496),r=o(792);e.activate=function(e){let o=t.commands.registerCommand("opg.start",(()=>{new r.Git}));e.subscriptions.push(o)},e.deactivate=function(){}})(),module.exports=s})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ([
+/* 0 */,
+/* 1 */
+/***/ ((module) => {
+
+module.exports = require("vscode");
+
+/***/ }),
+/* 2 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.VsCode = void 0;
+const vscode_1 = __webpack_require__(1);
+class VsCode {
+    static showMessage(message) {
+        vscode_1.window.showInformationMessage(message);
+    }
+    static async openURL(url) {
+        const hasOpenedSuccessfully = await vscode_1.env.openExternal(vscode_1.Uri.parse(url));
+        const message = hasOpenedSuccessfully ? "Opened Git repository" : "An error occurred while opening repository";
+        this.showMessage(message);
+    }
+}
+exports.VsCode = VsCode;
+
+
+/***/ }),
+/* 3 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Git = void 0;
+const process_1 = __webpack_require__(5);
+const vs_code_1 = __webpack_require__(2);
+class Git {
+    constructor() {
+        this.GIT_COMMAND = "git config --get remote.origin.url";
+        this.initGitURL();
+    }
+    async initGitURL() {
+        try {
+            const reposityURL = await process_1.Process.runCommand(this.GIT_COMMAND);
+            this.parseURL(reposityURL);
+        }
+        catch (error) {
+            console.log("Error while running command", error);
+            vs_code_1.VsCode.showMessage("No directory with Git found");
+        }
+    }
+    /**
+     * 2 Github URL possibilities: https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories
+     *  - HTTPS: https://github.com/user/repo.git
+     *  - SSH  : git@github.com:user/repo.git
+     */
+    parseURL(repositoryURL) {
+        if (!repositoryURL) {
+            return vs_code_1.VsCode.showMessage("Git remote repository not found");
+        }
+        // url is in https:// format
+        if (repositoryURL.startsWith("http")) {
+            return vs_code_1.VsCode.openURL(repositoryURL);
+        }
+        // url must now be in git@github.com:user/repo.git format
+        if (!(repositoryURL.includes("@") && repositoryURL.includes(":"))) {
+            return vs_code_1.VsCode.showMessage("Unknown Git repository");
+        }
+        const [gitDomain, repositoryName] = repositoryURL.split(":"); // ["git@github.com", "user/repo.git"]
+        const domain = gitDomain.split("@")[1]; // ["git", "github.com"]
+        const url = `https://${domain}/${repositoryName}`;
+        vs_code_1.VsCode.openURL(url);
+    }
+}
+exports.Git = Git;
+
+
+/***/ }),
+/* 4 */
+/***/ ((module) => {
+
+module.exports = require("child_process");
+
+/***/ }),
+/* 5 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Process = void 0;
+const vscode_1 = __webpack_require__(1);
+const child_process_1 = __webpack_require__(4);
+class Process {
+    static getWorkingDirectory() {
+        const fileName = vscode_1.window.activeTextEditor?.document.fileName;
+        return vscode_1.workspace.workspaceFolders?.map((folder) => folder.uri.fsPath).filter((fsPath) => fileName?.startsWith(fsPath))[0];
+    }
+}
+exports.Process = Process;
+Process.runCommand = (command) => {
+    const cwd = Process.getWorkingDirectory();
+    return new Promise((resolve, reject) => {
+        (0, child_process_1.exec)(command, { cwd }, (err, output) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(output);
+        });
+    });
+};
+
+
+/***/ })
+/******/ 	]);
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+var exports = __webpack_exports__;
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.deactivate = exports.activate = void 0;
+const vscode_1 = __webpack_require__(1);
+const git_1 = __webpack_require__(3);
+function activate(context) {
+    let disposable = vscode_1.commands.registerCommand("opg.start", () => {
+        new git_1.Git();
+    });
+    context.subscriptions.push(disposable);
+}
+exports.activate = activate;
+function deactivate() { }
+exports.deactivate = deactivate;
+
+})();
+
+module.exports = __webpack_exports__;
+/******/ })()
+;
+//# sourceMappingURL=extension.js.map

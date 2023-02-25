@@ -19,12 +19,12 @@ class VsCode {
     static showMessage(message) {
         vscode.window.showInformationMessage(message);
     }
-    static openURL(url) {
-        if (!url) {
-            return this.showMessage("No Git repository found");
-        }
+    static async openURL(url) {
         this.showMessage("Opening Git repository");
-        vscode.env.openExternal(vscode.Uri.parse(url));
+        const hasOpenedSuccessfully = await vscode.env.openExternal(vscode.Uri.parse(url));
+        if (!hasOpenedSuccessfully) {
+            this.showMessage("An error occurred while opening repository");
+        }
     }
 }
 exports.VsCode = VsCode;
@@ -37,16 +37,75 @@ exports.VsCode = VsCode;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Git = void 0;
+const process_1 = __webpack_require__(5);
 const vs_code_1 = __webpack_require__(2);
 class Git {
     constructor() {
+        this.repositoryURL = "git config --get remote.origin.url";
         this.initGitURL();
     }
-    initGitURL() {
-        vs_code_1.VsCode.openURL("https://github.com/keshavDooleea/");
+    async initGitURL() {
+        try {
+            const reposityURL = await process_1.Process.runCommand(this.repositoryURL);
+            this.parseURL(reposityURL);
+        }
+        catch (error) {
+            console.log("Error while running command", error);
+            vs_code_1.VsCode.showMessage("Could not find Git remote repository");
+        }
+    }
+    /**
+     * 2 Github URL possibilities: https://docs.github.com/en/get-started/getting-started-with-git/about-remote-repositories
+     *  - HTTPS: https://github.com/user/repo.git
+     *  - SSH  : git@github.com:user/repo.git
+     */
+    parseURL(repositoryURL) {
+        if (!repositoryURL) {
+            return vs_code_1.VsCode.showMessage("No Git repository found");
+        }
+        // url is in https:// format
+        if (repositoryURL.startsWith("http")) {
+            return vs_code_1.VsCode.openURL(repositoryURL);
+        }
+        // url must now be in git@github.com:user/repo.git format
+        if (!(repositoryURL.includes("@") && repositoryURL.includes(":"))) {
+            return vs_code_1.VsCode.showMessage("Unknown Git repository");
+        }
+        const [gitDomain, repositoryName] = repositoryURL.split(":"); // ["git@github.com", "user/repo.git"]
+        const domain = gitDomain.split("@")[1]; // ["git", "github.com"]
+        const url = `https://${domain}/${repositoryName}`;
+        console.log("URL IS", url);
+        vs_code_1.VsCode.openURL(url);
     }
 }
 exports.Git = Git;
+
+
+/***/ }),
+/* 4 */
+/***/ ((module) => {
+
+module.exports = require("child_process");
+
+/***/ }),
+/* 5 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Process = void 0;
+const cp = __webpack_require__(4);
+class Process {
+}
+exports.Process = Process;
+Process.runCommand = (command) => new Promise((resolve, reject) => {
+    cp.exec(command, (err, output) => {
+        if (err) {
+            return reject(err);
+        }
+        return resolve(output);
+    });
+});
 
 
 /***/ })

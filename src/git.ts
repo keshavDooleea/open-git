@@ -39,7 +39,7 @@ export class Git {
   }
 
   private openHTTPS(repositoryURL: string): Promise<void> {
-    const url = decodeURI(repositoryURL).trim(); // remove URLs encodings
+    const [url] = repositoryURL.split(".git"); // remove .git to remove extra default encodings at the end (%0A)
     return VsCode.openURL(url);
   }
 

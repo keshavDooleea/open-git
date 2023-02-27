@@ -4,7 +4,7 @@
   "description": "Open Git repository",
   "author": "Reetesh Dooleea",
   "publisher": "ReeteshDooleea",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "repository": {
     "type": "git",
     "url": "https://github.com/keshavDooleea/open-git"

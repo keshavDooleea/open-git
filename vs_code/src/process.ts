@@ -1,22 +1,9 @@
 import { window, workspace } from "vscode";
-import { ExecException, exec } from "child_process";
 import { dirname } from "path";
+import { Process } from "shared";
 
-export class Process {
-  static runCommand = (command: string): Promise<string> => {
-    const cwd = Process.getWorkingDirectory();
-
-    return new Promise<string>((resolve, reject) => {
-      exec(command, { cwd }, (err: ExecException | null, output: string) => {
-        if (err) {
-          return reject(new Error("No directory with Git found!"));
-        }
-        return resolve(output);
-      });
-    });
-  };
-
-  private static getWorkingDirectory(): string | undefined {
+export class VsCodeProcess extends Process {
+  protected getWorkingDirectory(): string | undefined {
     const fileName = window.activeTextEditor?.document.fileName;
 
     // a file is opened, return its working directory

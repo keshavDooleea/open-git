@@ -1,11 +1,13 @@
+import { Git } from "shared";
 import { ExtensionContext, commands } from "vscode";
-import { Git } from "./git";
+import { VsCodeHandler } from "./handler";
+import { VsCodeProcess } from "./process";
 
 export function activate(context: ExtensionContext) {
   let disposable = commands.registerCommand("opg.start", () => {
-    // console.log(helloGit());
-    console.log("MDOMW");
-    new Git();
+    const handler = new VsCodeHandler();
+    const process = new VsCodeProcess();
+    new Git(handler, process);
   });
 
   context.subscriptions.push(disposable);

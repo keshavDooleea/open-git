@@ -3,6 +3,8 @@ import { Git } from "./git";
 
 export function activate(context: ExtensionContext) {
   let disposable = commands.registerCommand("opg.start", () => {
+    // console.log(helloGit());
+    console.log("MDOMW");
     new Git();
   });
 

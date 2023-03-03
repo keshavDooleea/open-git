@@ -4,7 +4,7 @@
   "description": "Open Git repository",
   "author": "Reetesh Dooleea",
   "publisher": "ReeteshDooleea",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "repository": {
     "type": "git",
     "url": "https://github.com/keshavDooleea/open-git"
@@ -21,15 +21,16 @@
     "commands": [
       {
         "command": "open-git-dir",
-        "title": "Open Git Directory"
+        "title": "opd: Open Git Directory"
       },
       {
         "command": "open-git-file",
-        "title": "Open Git File"
+        "title": "opf: Open Git File"
       }
     ]
   },
   "scripts": {
+    "publish": "vsce publish",
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
     "watch": "webpack --watch",

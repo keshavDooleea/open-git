@@ -1,17 +1,22 @@
-import { Process } from "./process";
+import { AbsManager } from "./managers";
 import { VsCode } from "./vs-code";
 
 export class Git {
-  private readonly GIT_COMMAND = "git config --get remote.origin.url";
+  private manager!: AbsManager;
 
-  constructor() {
-    this.initGitURL();
+  private setManager(manager: AbsManager): void {
+    this.manager = manager;
   }
 
-  private async initGitURL(): Promise<void> {
+  async init(manager: AbsManager): Promise<void> {
+    this.setManager(manager);
+    this.parseURL();
+  }
+
+  private async parseURL(): Promise<void> {
     try {
-      const repositoryURL = await Process.runCommand(this.GIT_COMMAND);
-      this.parseURL(repositoryURL);
+      const repositoryURL = await this.manager.runCommand();
+      this.openURL(repositoryURL);
     } catch (err) {
       const error = err as Error;
       console.log("Error while running command", error);
@@ -24,34 +29,17 @@ export class Git {
    *  - HTTPS: https://github.com/user/repo.git
    *  - SSH  : git@github.com:user/repo.git
    */
-  private parseURL(repositoryURL: string): Promise<void> | void {
+  private openURL(repositoryURL: string): Promise<void> | void {
     if (!repositoryURL) {
       return VsCode.showMessage("Git remote repository not found!");
     }
 
     // url is in https:// format
     if (repositoryURL.startsWith("http")) {
-      return this.openHTTPS(repositoryURL);
+      return this.manager.openHTTPS(repositoryURL);
     }
 
     // url must now be in git@github.com:user/repo.git format
-    this.openSSH(repositoryURL);
-  }
-
-  private openHTTPS(repositoryURL: string): Promise<void> {
-    const [url] = repositoryURL.split(".git"); // remove .git to remove extra default encodings at the end (%0A)
-    return VsCode.openURL(url);
-  }
-
-  private openSSH(repositoryURL: string): Promise<void> | void {
-    if (!(repositoryURL.includes("@") && repositoryURL.includes(":"))) {
-      return VsCode.showMessage("Unknown Git repository!");
-    }
-
-    const [gitDomain, repositoryName] = repositoryURL.split(":"); // ["git@github.com", "user/repo.git"]
-    const domain = gitDomain.split("@")[1]; // ["git", "github.com"]
-    const url = `https://${domain}/${repositoryName}`;
-
-    VsCode.openURL(url);
+    this.manager.openSSH(repositoryURL);
   }
 }

@@ -1,12 +1,14 @@
-import { ExtensionContext, commands } from "vscode";
-import { Git } from "./git";
+import { ExtensionContext } from "vscode";
+import { GitDisposable } from "./disposable";
+import { Manager } from "./managers";
 
 export function activate(context: ExtensionContext) {
-  let disposable = commands.registerCommand("opg.start", () => {
-    new Git();
-  });
+  const disposable = new GitDisposable(context);
 
-  context.subscriptions.push(disposable);
+  disposable.add("open-git-dir", Manager.DIRECTORY);
+  disposable.add("open-git-file", Manager.FILE);
+
+  disposable.subscribe();
 }
 
 export function deactivate() {}

@@ -20,8 +20,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "opg.start",
-        "title": "opg"
+        "command": "open-git-dir",
+        "title": "Open Git Directory"
+      },
+      {
+        "command": "open-git-file",
+        "title": "Open Git File"
       }
     ]
   },

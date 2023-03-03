@@ -1,6 +1,7 @@
 # Open-Git
 
-An extension that opens the current Git remote repository in the browser in a step.
+An extension that opens the current Git remote repository in the browser in a step.  
+Download extension at https://marketplace.visualstudio.com/items?itemName=ReeteshDooleea.opg
 
 ## Usage
 
@@ -17,4 +18,4 @@ where `opg` stands for `open git`.
 
 Example:
 
-![Command Palette steps](./src/assets/command_step.png)
+![Command Palette steps](./assets/command_step.png)

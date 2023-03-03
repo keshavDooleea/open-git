@@ -3,11 +3,13 @@ import { ExecException, exec } from "child_process";
 import { dirname } from "path";
 
 export class Process {
-  static runCommand = (command: string): Promise<string> => {
-    const cwd = Process.getWorkingDirectory();
+  private readonly GIT_COMMAND = "git config --get remote.origin.url";
+
+  runCommand = (): Promise<string> => {
+    const cwd = this.getWorkingDirectory();
 
     return new Promise<string>((resolve, reject) => {
-      exec(command, { cwd }, (err: ExecException | null, output: string) => {
+      exec(this.GIT_COMMAND, { cwd }, (err: ExecException | null, output: string) => {
         if (err) {
           return reject(new Error("No directory with Git found!"));
         }
@@ -16,8 +18,8 @@ export class Process {
     });
   };
 
-  private static getWorkingDirectory(): string | undefined {
-    const fileName = window.activeTextEditor?.document.fileName;
+  private getWorkingDirectory(): string | undefined {
+    const fileName = this.getFileName();
 
     // a file is opened, return its working directory
     if (fileName) {
@@ -33,5 +35,9 @@ export class Process {
     }
 
     return workSpace[0].uri.fsPath;
+  }
+
+  getFileName(): string | undefined {
+    return window.activeTextEditor?.document.fileName;
   }
 }

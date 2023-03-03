@@ -5,9 +5,9 @@ export class VsCode {
     window.showInformationMessage(message);
   }
 
-  static async openURL(url: string): Promise<void> {
+  static async openURL(url: string, successMessage: string): Promise<void> {
     const hasOpenedSuccessfully: boolean = await env.openExternal(Uri.parse(url));
-    const message = hasOpenedSuccessfully ? "Opened Git repository" : "An error occurred while opening repository";
+    const message = hasOpenedSuccessfully ? successMessage : "An error occurred while opening repository";
     this.showMessage(message);
   }
 }

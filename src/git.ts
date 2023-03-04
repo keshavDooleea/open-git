@@ -15,7 +15,7 @@ export class Git {
 
   private async parseURL(): Promise<void> {
     try {
-      const repositoryURL = await this.manager.runCommand();
+      const repositoryURL = await this.manager.getGitURL();
       this.openURL(repositoryURL);
     } catch (err) {
       const error = err as Error;

@@ -1,12 +1,15 @@
 # Open-Git
 
-An extension that opens the current Git remote repository in the browser in a step.  
+An extension that opens the current Git remote repository in the browser in a step  
 Download extension at https://marketplace.visualstudio.com/items?itemName=ReeteshDooleea.opg
 
 ## Commands
 
-1. `Open Git Directory` which opens the root of the active git directory
-2. `Open Git File` which opens the active file in the editor
+1. `OPG: Open Directory` which opens the root directory of the git remote repository
+2. `OPG: Open File` which opens the active file in VS Code editor on the _current_ branch
+3. `OPG: Open File (master)` which opens the active file in VS Code editor on the _master_ branch
+
+where `OPG` stands for `Open-Git`.
 
 ## Usage
 
@@ -14,10 +17,8 @@ Run the following commands in your current git directory:
 
 ```
 Open the Command Palette : Ctrl + Shift + P
-Enter the Command        : opf
+Enter the Command        : OPG: Open File
 ```
-
-where `opf` stands for `Open Git File`.
 
 <br />
 

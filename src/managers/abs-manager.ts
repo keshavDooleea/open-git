@@ -8,8 +8,8 @@ export abstract class AbsManager {
     this.process = new Process();
   }
 
-  runCommand(): Promise<string> {
-    return this.process.runCommand();
+  getGitURL(): Promise<string> {
+    return this.process.getGitURL();
   }
 
   protected getBaseHttpsURL(repositoryURL: string): string {

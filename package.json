@@ -21,11 +21,15 @@
     "commands": [
       {
         "command": "open-git-dir",
-        "title": "opd: Open Git Directory"
+        "title": "OPG: Open Directory"
       },
       {
-        "command": "open-git-file",
-        "title": "opf: Open Git File"
+        "command": "open-git-file-branch",
+        "title": "OPG: Open File (current branch)"
+      },
+      {
+        "command": "open-git-file-master",
+        "title": "OPG: Open File (master)"
       }
     ]
   },

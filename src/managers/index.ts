@@ -1,6 +1,8 @@
 import { AbsManager } from "./abs-manager";
-import { ManagerHandler, Manager } from "./manager-handler";
+import { ManagerHandler } from "./manager-handler";
 import { DirectoryManager } from "./directory-manager";
-import { FileManager } from "./file-manager";
+import { FileBranchManager } from "./file-branch-manager";
+import { FileMasterManager } from "./file-master-manager";
+import { Manager, DEFAULT_BRANCH } from "./manager-utils";
 
-export { AbsManager, ManagerHandler, Manager, DirectoryManager, FileManager };
+export { AbsManager, ManagerHandler, Manager, DirectoryManager, FileBranchManager, FileMasterManager, DEFAULT_BRANCH };

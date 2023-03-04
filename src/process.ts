@@ -1,15 +1,29 @@
 import { window, workspace } from "vscode";
 import { ExecException, exec } from "child_process";
 import { dirname } from "path";
+import { DEFAULT_BRANCH } from "./managers";
 
 export class Process {
-  private readonly GIT_COMMAND = "git config --get remote.origin.url";
+  async getGitURL(): Promise<string> {
+    const command = "git config --get remote.origin.url";
+    return await this.runCommand(command);
+  }
 
-  runCommand = (): Promise<string> => {
+  async getCurrentBranch(): Promise<string> {
+    const command = "git branch --show-current";
+
+    try {
+      return await this.runCommand(command);
+    } catch (err) {
+      return DEFAULT_BRANCH;
+    }
+  }
+
+  private runCommand = (command: string): Promise<string> => {
     const cwd = this.getWorkingDirectory();
 
     return new Promise<string>((resolve, reject) => {
-      exec(this.GIT_COMMAND, { cwd }, (err: ExecException | null, output: string) => {
+      exec(command, { cwd }, (err: ExecException | null, output: string) => {
         if (err) {
           return reject(new Error("No directory with Git found!"));
         }

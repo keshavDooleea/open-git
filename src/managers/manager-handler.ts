@@ -1,37 +1,42 @@
-import { AbsManager, DirectoryManager, FileManager } from "./";
-
-export enum Manager {
-  DIRECTORY,
-  FILE,
-}
+import { AbsManager, DirectoryManager, FileBranchManager, FileMasterManager, Manager } from "./";
 
 // to prevent multiple new instantiations of managers
 export class ManagerHandler {
   private _directoryManager: DirectoryManager | undefined;
-  private _fileManager: FileManager | undefined;
+  private _fileMasterManager: FileMasterManager | undefined;
+  private _fileBranchManager: FileBranchManager | undefined;
 
-  get directoryManager(): DirectoryManager {
-    if (!this._directoryManager) {
-      this._directoryManager = new DirectoryManager();
+  private initManager<T>(manager: T | undefined, instance: new () => T): T {
+    if (!manager) {
+      manager = new instance();
     }
 
+    return manager;
+  }
+
+  private get directoryManager(): DirectoryManager {
+    this._directoryManager = this.initManager(this._directoryManager, DirectoryManager);
     return this._directoryManager;
   }
 
-  get fileManager(): FileManager {
-    if (!this._fileManager) {
-      this._fileManager = new FileManager();
-    }
+  private get fileBranchManager(): FileBranchManager {
+    this._fileBranchManager = this.initManager(this._fileBranchManager, FileBranchManager);
+    return this._fileBranchManager;
+  }
 
-    return this._fileManager;
+  private get fileMasterManager(): FileMasterManager {
+    this._fileMasterManager = this.initManager(this._fileMasterManager, FileMasterManager);
+    return this._fileMasterManager;
   }
 
   getManager(key: Manager): AbsManager {
     switch (key) {
       case Manager.DIRECTORY:
         return this.directoryManager;
-      case Manager.FILE:
-        return this.fileManager;
+      case Manager.FILE_MASTER:
+        return this.fileMasterManager;
+      case Manager.FILE_BRANCH:
+        return this.fileBranchManager;
     }
   }
 }

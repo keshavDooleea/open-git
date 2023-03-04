@@ -1,7 +1,11 @@
 import { VsCode } from "../vs-code";
-import { AbsManager } from "./abs-manager";
+import { AbsManager, DEFAULT_BRANCH } from ".";
+import { StringUtils } from "../utils";
 
-export class FileManager extends AbsManager {
+/**
+ * Opens file on master branch
+ */
+export class FileMasterManager extends AbsManager {
   openHTTPS(url: string): void {
     const httpsURL = this.getBaseHttpsURL(url);
     this.openFile(httpsURL);
@@ -12,21 +16,14 @@ export class FileManager extends AbsManager {
     this.openFile(sshURL);
   }
 
-  private async getCurrentBranch(): Promise<string> {
-    const defaultBranch = "master";
-    // Todo: read current branch
-    return Promise.resolve("master") || defaultBranch;
-  }
-
-  // 'test/a/b/c' returns 'c'
-  private getLastTextFromURL(url: string): string | undefined {
-    return url.split("/").pop();
+  protected async getCurrentBranch(): Promise<string> {
+    return DEFAULT_BRANCH;
   }
 
   // concatonate working directory url with fileName
   private async openFile(url: string): Promise<void> {
     // extract repository name from Git url
-    const repositoryName = this.getLastTextFromURL(url);
+    const repositoryName = StringUtils.getLastSubString(url);
 
     // from the OS full path, extract only the path that follows the repository name
     const openedFile = this.process.getFileName();
@@ -49,7 +46,7 @@ export class FileManager extends AbsManager {
     // replace all backward slashes with forward ones
     fileURL = fileURL.replace(/\\/g, "/");
 
-    const message = `Opened ${this.getLastTextFromURL(fileURL)}`;
+    const message = `Opened ${StringUtils.getLastSubString(fileName)} on ${branch}`;
     VsCode.openURL(fileURL, message);
   }
 }

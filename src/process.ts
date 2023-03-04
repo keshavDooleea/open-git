@@ -1,15 +1,16 @@
 import { window, workspace } from "vscode";
 import { ExecException, exec } from "child_process";
+import { DEFAULT_BRANCH, GIT_COMMANDS, CustomError } from "./utils";
 import { dirname } from "path";
 import { VsCode } from "./vs-code";
-import { DEFAULT_BRANCH, GIT_COMMANDS } from "./utils";
 
 export class Process {
   async getGitURL(): Promise<string | undefined> {
     try {
       return await this.runCommand(GIT_COMMANDS.remoteURL);
     } catch (err) {
-      VsCode.showMessage("Git remote repository not found!");
+      const message = CustomError.getMessage(err, "Git remote repository not found!");
+      VsCode.showMessage(message);
     }
   }
 
@@ -48,7 +49,7 @@ export class Process {
 
     // empty sidebar, no workspace opened
     if (!workSpace || workSpace.length === 0) {
-      throw new Error("No directory opened!");
+      throw new CustomError("No directory is opened!");
     }
 
     return workSpace[0].uri.fsPath;

@@ -1,6 +1,7 @@
 import { commands, Disposable, ExtensionContext } from "vscode";
-import { Manager, ManagerHandler } from "./managers";
+import { ManagerHandler } from "./managers";
 import { Git } from "./git";
+import { Manager } from "./utils";
 
 export class GitDisposable {
   private disposables: Disposable[];

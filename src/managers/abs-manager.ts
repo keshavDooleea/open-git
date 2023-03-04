@@ -8,7 +8,7 @@ export abstract class AbsManager {
     this.process = new Process();
   }
 
-  getGitURL(): Promise<string> {
+  getGitURL(): Promise<string | undefined> {
     return this.process.getGitURL();
   }
 

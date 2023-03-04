@@ -3,5 +3,3 @@ export enum Manager {
   FILE_MASTER,
   FILE_BRANCH,
 }
-
-export const DEFAULT_BRANCH = "master";

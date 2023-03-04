@@ -1,6 +1,6 @@
 import { ExtensionContext } from "vscode";
 import { GitDisposable } from "./disposable";
-import { Manager } from "./managers";
+import { Manager } from "./utils";
 
 export function activate(context: ExtensionContext) {
   const disposable = new GitDisposable(context);

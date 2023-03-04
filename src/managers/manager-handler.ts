@@ -1,4 +1,5 @@
-import { AbsManager, DirectoryManager, FileBranchManager, FileMasterManager, Manager } from "./";
+import { Manager } from "../utils";
+import { AbsManager, DirectoryManager, FileBranchManager, FileMasterManager } from "./";
 
 // to prevent multiple new instantiations of managers
 export class ManagerHandler {

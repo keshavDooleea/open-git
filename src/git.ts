@@ -1,27 +1,20 @@
 import { AbsManager } from "./managers";
-import { VsCode } from "./vs-code";
 
 export class Git {
   private manager!: AbsManager;
-
-  private setManager(manager: AbsManager): void {
-    this.manager = manager;
-  }
 
   async init(manager: AbsManager): Promise<void> {
     this.setManager(manager);
     this.parseURL();
   }
 
+  private setManager(manager: AbsManager): void {
+    this.manager = manager;
+  }
+
   private async parseURL(): Promise<void> {
-    try {
-      const repositoryURL = await this.manager.getGitURL();
-      this.openURL(repositoryURL);
-    } catch (err) {
-      const error = err as Error;
-      console.log("Error while running command", error);
-      VsCode.showMessage(error.message);
-    }
+    const repositoryURL = await this.manager.getGitURL();
+    this.openURL(repositoryURL);
   }
 
   /**
@@ -29,9 +22,9 @@ export class Git {
    *  - HTTPS: https://github.com/user/repo.git
    *  - SSH  : git@github.com:user/repo.git
    */
-  private openURL(repositoryURL: string): Promise<void> | void {
+  private openURL(repositoryURL: string | undefined): Promise<void> | void {
     if (!repositoryURL) {
-      return VsCode.showMessage("Git remote repository not found!");
+      return;
     }
 
     // url is in https:// format

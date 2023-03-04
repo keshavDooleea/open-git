@@ -1,20 +1,23 @@
 import { window, workspace } from "vscode";
 import { ExecException, exec } from "child_process";
 import { dirname } from "path";
-import { DEFAULT_BRANCH } from "./managers";
+import { VsCode } from "./vs-code";
+import { DEFAULT_BRANCH, GIT_COMMANDS } from "./utils";
 
 export class Process {
-  async getGitURL(): Promise<string> {
-    const command = "git config --get remote.origin.url";
-    return await this.runCommand(command);
+  async getGitURL(): Promise<string | undefined> {
+    try {
+      return await this.runCommand(GIT_COMMANDS.remoteURL);
+    } catch (err) {
+      VsCode.showMessage("Git remote repository not found!");
+    }
   }
 
   async getCurrentBranch(): Promise<string> {
-    const command = "git branch --show-current";
-
     try {
-      return await this.runCommand(command);
+      return await this.runCommand(GIT_COMMANDS.currentBranch);
     } catch (err) {
+      VsCode.showMessage(`Current branch is ${DEFAULT_BRANCH}`);
       return DEFAULT_BRANCH;
     }
   }
@@ -25,7 +28,7 @@ export class Process {
     return new Promise<string>((resolve, reject) => {
       exec(command, { cwd }, (err: ExecException | null, output: string) => {
         if (err) {
-          return reject(new Error("No directory with Git found!"));
+          return reject(err);
         }
         return resolve(output);
       });

@@ -1,6 +1,6 @@
 import { VsCode } from "../vs-code";
-import { AbsManager, DEFAULT_BRANCH } from ".";
-import { StringUtils } from "../utils";
+import { AbsManager } from ".";
+import { DEFAULT_BRANCH, StringUtils } from "../utils";
 
 /**
  * Opens file on master branch
@@ -44,7 +44,7 @@ export class FileMasterManager extends AbsManager {
     let fileURL = `${url}/blob/${branch}${fileName}`;
     fileURL = StringUtils.formatSlashes(fileURL);
 
-    const message = `Opened ${StringUtils.getLastSubString(fileName)} on ${branch}`;
+    const message = `Opened ${StringUtils.getLastSubString(fileURL)} on ${branch}`;
     VsCode.openURL(fileURL, message);
   }
 }

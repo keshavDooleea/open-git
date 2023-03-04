@@ -6,10 +6,10 @@ Download extension at https://marketplace.visualstudio.com/items?itemName=Reetes
 ## Commands
 
 1. `OPG: Open Directory` which opens the root directory of the git remote repository
-2. `OPG: Open File` which opens the active file in VS Code editor on the _current_ branch
-3. `OPG: Open File (master)` which opens the active file in VS Code editor on the _master_ branch
+2. `OPG: Open File (master)` which opens the active file in VS Code editor on the _master_ branch
+3. `OPG: Open File (current branch)` which opens the active file in VS Code editor on the _current_ branch
 
-where `OPG` stands for `Open-Git`.
+Where `OPG` stands for `Open-Git`
 
 ## Usage
 
@@ -17,7 +17,7 @@ Run the following commands in your current git directory:
 
 ```
 Open the Command Palette : Ctrl + Shift + P
-Enter the Command        : OPG: Open File
+Enter the Command        : OPG: Open Directory
 ```
 
 <br />

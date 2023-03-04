@@ -9,7 +9,7 @@ Download extension at https://marketplace.visualstudio.com/items?itemName=Reetes
 2. `OPG: Open File (master)` which opens the active file in VS Code editor on the _master_ branch
 3. `OPG: Open File (current branch)` which opens the active file in VS Code editor on the _current_ branch
 
-Where `OPG` stands for `Open-Git`
+where `OPG` stands for `Open-Git`
 
 ## Usage
 

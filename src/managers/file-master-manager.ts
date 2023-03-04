@@ -42,9 +42,7 @@ export class FileMasterManager extends AbsManager {
     // construct URL to file path
     const branch = await this.getCurrentBranch();
     let fileURL = `${url}/blob/${branch}${fileName}`;
-
-    // replace all backward slashes with forward ones
-    fileURL = fileURL.replace(/\\/g, "/");
+    fileURL = StringUtils.formatSlashes(fileURL);
 
     const message = `Opened ${StringUtils.getLastSubString(fileName)} on ${branch}`;
     VsCode.openURL(fileURL, message);

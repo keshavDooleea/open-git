@@ -1,11 +1,12 @@
 import { Manager } from "../utils";
-import { AbsManager, DirectoryManager, FileBranchManager, FileMasterManager } from "./";
+import { AbsManager, CompareManager, DirectoryManager, FileBranchManager, FileMasterManager } from "./";
 
 // to prevent multiple new instantiations of managers
 export class ManagerHandler {
   private _directoryManager: DirectoryManager | undefined;
   private _fileMasterManager: FileMasterManager | undefined;
   private _fileBranchManager: FileBranchManager | undefined;
+  private _compareManager: CompareManager | undefined;
 
   private initManager<T>(manager: T | undefined, instance: new () => T): T {
     if (!manager) {
@@ -30,6 +31,11 @@ export class ManagerHandler {
     return this._fileMasterManager;
   }
 
+  private get compareManager(): CompareManager {
+    this._compareManager = this.initManager(this._compareManager, CompareManager);
+    return this._compareManager;
+  }
+
   getManager(key: Manager): AbsManager {
     switch (key) {
       case Manager.DIRECTORY:
@@ -38,6 +44,8 @@ export class ManagerHandler {
         return this.fileMasterManager;
       case Manager.FILE_BRANCH:
         return this.fileBranchManager;
+      case Manager.COMPARE:
+        return this.compareManager;
     }
   }
 }

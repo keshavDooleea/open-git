@@ -30,6 +30,10 @@
       {
         "command": "open-git-file-master",
         "title": "OPG: Open File (default branch)"
+      },
+      {
+        "command": "open-git-compare",
+        "title": "OPG: Compare (default & current branch)"
       }
     ]
   },

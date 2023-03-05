@@ -1,5 +1,4 @@
 import { Process } from "../process";
-import { VsCode } from "../vs-code";
 
 export abstract class AbsManager {
   protected process: Process;
@@ -12,12 +11,12 @@ export abstract class AbsManager {
     return this.process.getGitURL();
   }
 
-  protected getBaseHttpsURL(repositoryURL: string): string {
+  private getBaseHttpsURL(repositoryURL: string): string {
     const [url] = repositoryURL.split(".git"); // remove .git to remove extra default encodings at the end (%0A)
     return url;
   }
 
-  protected getBaseSshURL(repositoryURL: string): string {
+  private getBaseSshURL(repositoryURL: string): string {
     if (!(repositoryURL.includes("@") && repositoryURL.includes(":"))) {
       throw new Error("Unknown Git repository!");
     }
@@ -29,10 +28,15 @@ export abstract class AbsManager {
     return url;
   }
 
-  protected openURL(url: string, message: string): void {
-    VsCode.openURL(url, message);
+  openHTTPS(url: string): void {
+    const httpsURL = this.getBaseHttpsURL(url);
+    this.openGit(httpsURL);
   }
 
-  abstract openHTTPS(url: string): void;
-  abstract openSSH(url: string): void;
+  openSSH(url: string): void {
+    const sshURL = this.getBaseSshURL(url);
+    this.openGit(sshURL);
+  }
+
+  protected abstract openGit(url: string): void;
 }

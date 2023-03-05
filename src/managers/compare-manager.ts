@@ -8,14 +8,8 @@ import { AbsManager } from "./abs-manager";
  * https://stackoverflow.com/a/64922402
  */
 export class CompareManager extends AbsManager {
-  openHTTPS(url: string): void {
-    const httpsURL = this.getBaseHttpsURL(url);
-    this.openCompareURL(httpsURL);
-  }
-
-  openSSH(url: string): void {
-    const sshURL = this.getBaseSshURL(url);
-    this.openCompareURL(sshURL);
+  openGit(url: string): void {
+    this.openCompareURL(url);
   }
 
   private async openCompareURL(url: string): Promise<void> {

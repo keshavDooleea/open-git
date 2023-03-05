@@ -6,14 +6,8 @@ import { StringUtils } from "../utils";
  * Opens file on master or default branch
  */
 export class FileMasterManager extends AbsManager {
-  openHTTPS(url: string): void {
-    const httpsURL = this.getBaseHttpsURL(url);
-    this.openFile(httpsURL);
-  }
-
-  openSSH(url: string): void {
-    const sshURL = this.getBaseSshURL(url);
-    this.openFile(sshURL);
+  openGit(url: string): void {
+    this.openFile(url);
   }
 
   // usually equivalent to 'master' but can be 'main' or any other branch

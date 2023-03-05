@@ -1,6 +1,6 @@
 import { window, workspace } from "vscode";
 import { ExecException, exec } from "child_process";
-import { DEFAULT_BRANCH, GIT_COMMANDS, CustomError } from "./utils";
+import { DEFAULT_BRANCH, GIT_COMMANDS, CustomError, StringUtils } from "./utils";
 import { dirname } from "path";
 import { VsCode } from "./vs-code";
 
@@ -14,9 +14,23 @@ export class Process {
     }
   }
 
+  // usually equivalent to 'master' but can be 'main' or any other branch
+  async getDefaultBranch(): Promise<string> {
+    try {
+      let grepResult = await this.runCommand(GIT_COMMANDS.defaultBranch);
+      grepResult = grepResult.split(": ")[1];
+      grepResult = StringUtils.removeNewLines(grepResult);
+      return grepResult;
+    } catch (err) {
+      return DEFAULT_BRANCH;
+    }
+  }
+
   async getCurrentBranch(): Promise<string> {
     try {
-      return await this.runCommand(GIT_COMMANDS.currentBranch);
+      let branch = await this.runCommand(GIT_COMMANDS.currentBranch);
+      branch = StringUtils.removeNewLines(branch);
+      return branch;
     } catch (err) {
       VsCode.showMessage(`Current branch is ${DEFAULT_BRANCH}`);
       return DEFAULT_BRANCH;

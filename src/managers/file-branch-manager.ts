@@ -1,4 +1,3 @@
-import { StringUtils } from "../utils";
 import { FileMasterManager } from "./file-master-manager";
 
 /**
@@ -6,9 +5,6 @@ import { FileMasterManager } from "./file-master-manager";
  */
 export class FileBranchManager extends FileMasterManager {
   override async getCurrentBranch(): Promise<string> {
-    let branch = await this.process.getCurrentBranch();
-    branch = StringUtils.removeNewLines(branch);
-
-    return branch;
+    return await this.process.getCurrentBranch();
   }
 }

@@ -1,9 +1,9 @@
 import { VsCode } from "../vs-code";
 import { AbsManager } from ".";
-import { DEFAULT_BRANCH, StringUtils } from "../utils";
+import { StringUtils } from "../utils";
 
 /**
- * Opens file on master branch
+ * Opens file on master or default branch
  */
 export class FileMasterManager extends AbsManager {
   openHTTPS(url: string): void {
@@ -16,8 +16,9 @@ export class FileMasterManager extends AbsManager {
     this.openFile(sshURL);
   }
 
+  // usually equivalent to 'master' but can be 'main' or any other branch
   protected async getCurrentBranch(): Promise<string> {
-    return DEFAULT_BRANCH;
+    return await this.process.getDefaultBranch();
   }
 
   // concatonate working directory url with fileName

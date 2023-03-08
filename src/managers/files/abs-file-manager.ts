@@ -1,21 +1,18 @@
-import { VsCode } from "../vs-code";
-import { AbsManager } from ".";
-import { StringUtils } from "../utils";
+import { VsCode } from "../../vs-code";
+import { AbsManager } from "..";
+import { StringUtils } from "../../utils";
 
 /**
  * Opens file on master or default branch
  */
-export class FileMasterManager extends AbsManager {
+export abstract class AbsFileManager extends AbsManager {
   openGit(url: string): void {
     this.openFile(url);
   }
 
-  // usually equivalent to 'master' but can be 'main' or any other branch
-  protected async getCurrentBranch(): Promise<string> {
-    return await this.process.getDefaultBranch();
-  }
+  protected abstract getBranch(): Promise<string>;
 
-  // concatonate working directory url with fileName
+  // concatonate working directory url with filePath
   private async openFile(url: string): Promise<void> {
     // extract repository name from Git url
     const repositoryName = StringUtils.getLastSubString(url);
@@ -34,16 +31,15 @@ export class FileMasterManager extends AbsManager {
       return VsCode.showMessage("Sorry, no git repository found!");
     }
 
-    const formattedOpenedFile = StringUtils.formatSlashes(openedFile);
-    const fileName = formattedOpenedFile.split(dotGitPath)[1];
+    const filePath = StringUtils.formatSlashes(openedFile).split(dotGitPath)[1];
 
-    if (!fileName) {
+    if (!filePath) {
       return VsCode.showMessage("Sorry, this file can't be opened!");
     }
 
     // construct URL to file path
-    const branch = await this.getCurrentBranch();
-    let fileURL = `${url}/blob/${branch}${fileName}`;
+    const branch = await this.getBranch();
+    let fileURL = `${url}/blob/${branch}${filePath}`;
     fileURL = StringUtils.formatSlashes(fileURL);
 
     const message = `Opened ${StringUtils.getLastSubString(fileURL)} on ${branch}`;

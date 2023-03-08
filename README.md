@@ -25,4 +25,4 @@ Enter the Command        : OPG: Open Directory
 
 Example:
 
-![Command Palette steps](./assets/command_step.png)
+![Commands tutorials](./assets/OPG_tutorial.gif)

@@ -13,4 +13,9 @@ export class StringUtils {
   static formatSlashes(str: string): string {
     return str.replace(/\\/g, "/");
   }
+
+  static removeGitFromURL(repositoryURL: string): string {
+    const [url] = repositoryURL.split(".git"); // remove .git to remove extra default encodings at the end (%0A)
+    return url;
+  }
 }

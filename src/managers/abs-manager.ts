@@ -1,4 +1,5 @@
 import { Process } from "../process";
+import { StringUtils } from "../utils";
 
 export abstract class AbsManager {
   protected process: Process;
@@ -12,8 +13,7 @@ export abstract class AbsManager {
   }
 
   private getBaseHttpsURL(repositoryURL: string): string {
-    const [url] = repositoryURL.split(".git"); // remove .git to remove extra default encodings at the end (%0A)
-    return url;
+    return StringUtils.removeGitFromURL(repositoryURL);
   }
 
   private getBaseSshURL(repositoryURL: string): string {
@@ -21,8 +21,11 @@ export abstract class AbsManager {
       throw new Error("Unknown Git repository!");
     }
 
-    const [gitDomain, repositoryName] = repositoryURL.split(":"); // ["git@github.com", "user/repo.git"]
+    const [gitDomain, gitRepositoryName] = repositoryURL.split(":"); // ["git@github.com", "user/repo.git"]
+
     const domain = gitDomain.split("@")[1]; // ["git", "github.com"]
+    const repositoryName = StringUtils.removeGitFromURL(gitRepositoryName); // "user/repo.git" => "user/repo"
+
     const url = `https://${domain}/${repositoryName}`;
 
     return url;

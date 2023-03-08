@@ -28,7 +28,14 @@ export class FileMasterManager extends AbsManager {
     }
 
     // get folder/file path after repositoryName in path
-    const fileName = openedFile.split(repositoryName)[1];
+    const dotGitPath = await this.process.getDotGitPath();
+
+    if (!dotGitPath) {
+      return VsCode.showMessage("Sorry, no git repository found!");
+    }
+
+    const formattedOpenedFile = StringUtils.formatSlashes(openedFile);
+    const fileName = formattedOpenedFile.split(dotGitPath)[1];
 
     if (!fileName) {
       return VsCode.showMessage("Sorry, this file can't be opened!");

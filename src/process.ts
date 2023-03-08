@@ -37,6 +37,16 @@ export class Process {
     }
   }
 
+  async getDotGitPath(): Promise<string | undefined> {
+    try {
+      let gitPath = await this.runCommand(GIT_COMMANDS.dotGitPath);
+      gitPath = StringUtils.removeNewLines(gitPath);
+      return gitPath;
+    } catch (err) {
+      return undefined;
+    }
+  }
+
   private runCommand = (command: string): Promise<string> => {
     const cwd = this.getWorkingDirectory();
 

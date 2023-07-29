@@ -1,3 +1,4 @@
+import { AbsGitType } from "../git-types";
 import { Process } from "../process";
 import { StringUtils } from "../utils";
 
@@ -31,15 +32,15 @@ export abstract class AbsManager {
     return url;
   }
 
-  openHTTPS(url: string): void {
+  openHTTPS(url: string, gitType: AbsGitType): void {
     const httpsURL = this.getBaseHttpsURL(url);
-    this.openGit(httpsURL);
+    this.openGit(httpsURL, gitType);
   }
 
-  openSSH(url: string): void {
+  openSSH(url: string, gitType: AbsGitType): void {
     const sshURL = this.getBaseSshURL(url);
-    this.openGit(sshURL);
+    this.openGit(sshURL, gitType);
   }
 
-  protected abstract openGit(url: string): void;
+  protected abstract openGit(url: string, gitType: AbsGitType): void;
 }

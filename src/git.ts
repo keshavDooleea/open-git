@@ -1,4 +1,6 @@
+import { GitTypeFactory } from "./git-types";
 import { AbsManager } from "./managers";
+import { VsCode } from "./vs-code";
 
 export class Git {
   private manager!: AbsManager;
@@ -24,15 +26,18 @@ export class Git {
    */
   private openURL(repositoryURL: string | undefined): Promise<void> | void {
     if (!repositoryURL) {
+      VsCode.showMessage("No repository URL found!");
       return;
     }
 
+    const gitType = GitTypeFactory.getType(repositoryURL);
+
     // url is in https:// format
     if (repositoryURL.startsWith("http")) {
-      return this.manager.openHTTPS(repositoryURL);
+      return this.manager.openHTTPS(repositoryURL, gitType);
     }
 
     // url must now be in git@github.com:user/repo.git format
-    this.manager.openSSH(repositoryURL);
+    this.manager.openSSH(repositoryURL, gitType);
   }
 }

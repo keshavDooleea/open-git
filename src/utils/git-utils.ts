@@ -6,3 +6,10 @@ export const GIT_COMMANDS = {
 };
 
 export const DEFAULT_BRANCH = "master";
+
+export enum EGitType {
+  github,
+  gitlab,
+  bitbucket,
+  azure,
+}

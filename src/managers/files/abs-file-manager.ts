@@ -1,15 +1,12 @@
 import { VsCode } from "../../vs-code";
 import { AbsManager } from "..";
 import { StringUtils } from "../../utils";
+import { AbsGitType } from "../../git-types";
 
 /**
  * Opens file on master or default branch
  */
 export abstract class AbsFileManager extends AbsManager {
-  openGit(url: string): void {
-    this.openFile(url);
-  }
-
   protected abstract getBranch(): Promise<string>;
 
   // for 2 paths, given that the second path is longer that the first one, find recursively the common string from the starting position
@@ -31,7 +28,7 @@ export abstract class AbsFileManager extends AbsManager {
   }
 
   // concatonate working directory url with filePath
-  private async openFile(url: string): Promise<void> {
+  async openGit(url: string, gitType: AbsGitType): Promise<void> {
     // extract repository name from Git url
     const repositoryName = StringUtils.getLastSubString(url);
 
@@ -62,7 +59,7 @@ export abstract class AbsFileManager extends AbsManager {
     const branch = await this.getBranch();
     const filePath = StringUtils.formatSlashes(openedFilePath).split(commonPath)[1];
 
-    let fileURL = `${url}/blob/${branch}/${filePath}`;
+    let fileURL = gitType.getFilePath(url, branch, filePath);
     fileURL = StringUtils.formatSlashes(fileURL);
 
     const message = `Opened ${StringUtils.getLastSubString(fileURL)} on ${branch}`;

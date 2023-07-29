@@ -1,3 +1,4 @@
+import { AbsGitType } from "../git-types";
 import { VsCode } from "../vs-code";
 import { AbsManager } from "./abs-manager";
 
@@ -8,11 +9,11 @@ import { AbsManager } from "./abs-manager";
  * https://stackoverflow.com/a/64922402
  */
 export class CompareManager extends AbsManager {
-  openGit(url: string): void {
-    this.openCompareURL(url);
+  openGit(url: string, gitType: AbsGitType): void {
+    this.openCompareURL(url, gitType);
   }
 
-  private async openCompareURL(url: string): Promise<void> {
+  private async openCompareURL(url: string, gitType: AbsGitType): Promise<void> {
     const defaultBranch = await this.process.getDefaultBranch();
     const currentBranch = await this.process.getCurrentBranch();
 
@@ -21,8 +22,7 @@ export class CompareManager extends AbsManager {
     }
 
     // url format
-    const compareURL = `${url}/compare/${defaultBranch}...${currentBranch}`;
-
+    const compareURL = gitType.getComparePath(url, defaultBranch, currentBranch);
     const message = `Opened Git repository: comparing ${defaultBranch} with ${currentBranch}`;
     VsCode.openURL(compareURL, message);
   }

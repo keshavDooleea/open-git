@@ -1,3 +1,4 @@
+import { AbsGitType } from "../git-types";
 import { VsCode } from "../vs-code";
 import { AbsManager } from "./abs-manager";
 
@@ -7,7 +8,8 @@ import { AbsManager } from "./abs-manager";
 export class DirectoryManager extends AbsManager {
   private readonly message = "Opened Git repository";
 
-  openGit(url: string): void {
-    VsCode.openURL(url, this.message);
+  openGit(url: string, gitType: AbsGitType): void {
+    const directoryUrl = gitType.getDirectoryPath(url);
+    VsCode.openURL(directoryUrl, this.message);
   }
 }

@@ -1,6 +1,5 @@
 import { GitTypeFactory } from "./git-types";
 import { AbsManager } from "./managers";
-import { VsCode } from "./vs-code";
 
 export class Git {
   private manager!: AbsManager;
@@ -26,7 +25,6 @@ export class Git {
    */
   private openURL(repositoryURL: string | undefined): Promise<void> | void {
     if (!repositoryURL) {
-      VsCode.showMessage("No repository URL found!");
       return;
     }
 

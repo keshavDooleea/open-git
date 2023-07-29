@@ -7,7 +7,8 @@ import { VsCode } from "./vs-code";
 export class Process {
   async getGitURL(): Promise<string | undefined> {
     try {
-      return await this.runCommand(GIT_COMMANDS.remoteURL);
+      const url = await this.runCommand(GIT_COMMANDS.remoteURL);
+      return url.trim();
     } catch (err) {
       const message = CustomError.getMessage(err, "Git remote repository not found!");
       VsCode.showMessage(message);
@@ -18,10 +19,12 @@ export class Process {
   async getDefaultBranch(): Promise<string> {
     try {
       let grepResult = await this.runCommand(GIT_COMMANDS.defaultBranch);
+      VsCode.showMessage("grepResult " + grepResult); // to remove
       grepResult = grepResult.split(": ")[1];
       grepResult = StringUtils.removeNewLines(grepResult);
       return grepResult;
     } catch (err) {
+      VsCode.showMessage("grepResult err" + err); // to remove
       return DEFAULT_BRANCH;
     }
   }

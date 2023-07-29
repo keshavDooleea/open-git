@@ -1,5 +1,5 @@
 import { AbsGitType } from "./abs-git-type";
-import { AzureType } from "./azure.type";
+import { DevAzureType } from "./dev-azure.type";
 import { BitbucketType } from "./bitbucket.type";
 import { GithubType } from "./github.type";
 import { GitlabType } from "./gitlab.type";
@@ -17,7 +17,7 @@ export class GitTypeFactory {
     }
 
     if (url.includes("azure")) {
-      return new AzureType();
+      return new DevAzureType();
     }
 
     return new GithubType();

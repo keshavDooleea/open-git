@@ -19,14 +19,16 @@ export class Process {
   async getDefaultBranch(): Promise<string> {
     try {
       let grepResult = await this.runCommand(GIT_COMMANDS.defaultBranch);
-      VsCode.showMessage("grepResult " + grepResult); // to remove
-      grepResult = grepResult.split(": ")[1];
-      grepResult = StringUtils.removeNewLines(grepResult);
-      return grepResult;
+      const branchName = grepResult.match(/HEAD branch: (.+)/);
+      return branchName ? branchName[1].trim() : this.getShowDefaultBranch();
     } catch (err) {
-      VsCode.showMessage("grepResult err" + err); // to remove
-      return DEFAULT_BRANCH;
+      return this.getShowDefaultBranch();
     }
+  }
+
+  private getShowDefaultBranch(): string {
+    VsCode.showMessage(`No default branch found: setting '${DEFAULT_BRANCH}' as branch!`);
+    return DEFAULT_BRANCH;
   }
 
   async getCurrentBranch(): Promise<string> {
